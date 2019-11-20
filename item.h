@@ -1,4 +1,4 @@
-#indef item_h
+#ifndef item_h
 #define item_h
 
 #include <iostream>
@@ -7,8 +7,20 @@
 
 using namespace std; 
 
-class item
+class Item
 {
+ public:
+  Item(); 
 
+  char* getName(); 
+  int getID(); 
+  void setName(char*); 
+  void setID(int); 
 
-}
+ private: 
+  char* name; 
+  int id; 
+
+}; 
+
+#endif

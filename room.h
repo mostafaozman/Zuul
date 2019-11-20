@@ -1,4 +1,4 @@
-#indef room_h
+#ifndef room_h
 #define room_h
 
 #include <iostream>
@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class room
+class Room
 {
  public:
   Room(); 
@@ -22,7 +22,7 @@ class room
   void setItem(int); 
 
  private:
-  char* description; 
+  char* des; 
   int id; 
   map <int, char*>exit; 
   int item; 
