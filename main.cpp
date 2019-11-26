@@ -117,4 +117,43 @@ void pickItem(vector<Room*>* rooms, vector<Item*>* items, vector<int>* inventory
 {
   vector<Room*>::iterator i;
   vector<Item*>::iterator j;
+
+  for( i = rooms -> begin();  != rooms  -> end(); i++)
+    {
+      if (currentRoom == (*i) -> getID())
+	{
+	  for( j = items -> begin(); j != items -> end(); j++)
+	    {
+	      if ((*i) -> getItem() == (*j) -> getID() && (strcmp((*j) -> getName(), name) == 0))
+		{
+		  inventory -> push_back((*j) -> getID());
+		  (*i) -> setItem(0);
+		  cout << endl << "You picked up " << (*j) -> getName() << "." << endl;
+		  return; 
+		}
+	    }
+	}
+    }
+
+  cout << endl << "The item you are looking for is not here" << endl << endl; 
+
+}
+
+void dropItem(vector<Room*>* rooms, vector<Item*>* items, vector<int>* inventory, int currentRoom, char name[])
+{
+  int count;
+  vector<Room*>::iterator i;
+  vector<Item*>::iterator j;
+  vector<int>::iterator z; 
+}
+
+int move(vector<Room*>* rooms, int currentRoom, char direction[])
+{
+  for( i = rooms -> begin(); i != rooms -> end(); i++)
+    {
+      if (currentRoom == (*i) -> getID())
+	{
+	  map <int, char*> exit; 
+	}
+    }
 }
