@@ -12,14 +12,14 @@ class Item
  public:
   Item(); 
 
-  char* getName(); 
-  int getID(); 
-  void setName(char*); 
-  void setID(int); 
+  char* getName(); // Function for getting name 
+  int getID();  // Function for getting ID
+  void setName(char*); // Setting name
+  void setID(int); // Setting  ID
 
  private: 
-  char* name; 
-  int id; 
+  char* name; // for storing name
+  int id; // for storing ID
 
 }; 
 

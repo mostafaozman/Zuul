@@ -9,42 +9,42 @@ Room::Room()
 
 }
 
-char* Room::getDes()
-{
+char* Room::getDes() // Getter for room description
+{ 
   return des; 
 }
 
-int Room::getID()
+int Room::getID() // Getter for room ID
 {
   return id; 
 }
 
-map<int, char*>* Room::getExit()
+map<int, char*>* Room::getExit() // Getter for room exits
 {
   return &exit; 
 }
 
-int Room::getItem()
+int Room::getItem() // Getter for Item in the room
 {
   return item; 
 }
 
-void Room::setDes(char* inpDes)
+void Room::setDes(char* inpDes) // Setter for room description
 {
   des = inpDes; 
 }
 
-void Room::setID(int inpID)
+void Room::setID(int inpID) // Setter for room ID
 {
   id = inpID; 
 }
 
-void Room::setExit(map<int, char*> inpExit)
+void Room::setExit(map<int, char*> inpExit) // Setter for room exits
 {
   exit = inpExit; 
 }
 
-void Room::setItem(int inpItem)
+void Room::setItem(int inpItem) // Setter  for item in room
 {
   item = inpItem; 
 }

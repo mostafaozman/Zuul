@@ -1,8 +1,16 @@
+/*
+Zuul: A text based game played by taking simple inputs such as directions and actions like "get"
+or "drop". The goal of the game is to escape the map
+Created by: Mostafa Osman
+Date: 11/30
+
+*/
 #include <iostream>
 #include <cstring>
 #include <iomanip>
 #include <vector>
 #include <map>
+#include <algorithm>
 #include "room.h"
 #include "item.h"
 
@@ -19,15 +27,31 @@ int move(vector<Room*>* rooms, int currentRoom, char direction[]);
 
 int main()
 {
-  vector<Room*> rooms;
-  vector<Item*> items;
-  vector<int> inventory;
-  char input[30];
+  vector<Room*> rooms; // Vector for storing rooms
+  vector<Item*> items; // Storing items
+  vector<int> inventory; // Storing inventory
+  char input[50];
   int currentRoom = 1;
   initializeItems(&items);
   initializeRooms(&rooms);
-
-  cout << "You find yourself in the dark, inside a mansion. You vaguely recall that you may have been at a party of some sorts.  The doors all around the perimiter are locked, can you get out?" << endl; 
+  /* cout<<"Printing initialized rooms\n";
+  printRoom(&rooms, &items, 1);
+  printRoom(&rooms, &items, 2);
+  printRoom(&rooms, &items, 3);
+  printRoom(&rooms, &items, 4);
+  printRoom(&rooms, &items, 5);
+  printRoom(&rooms, &items, 6);
+  printRoom(&rooms, &items, 7);
+  printRoom(&rooms, &items, 8);
+  printRoom(&rooms, &items, 9);
+  printRoom(&rooms, &items, 10);
+  printRoom(&rooms, &items, 11);
+  printRoom(&rooms, &items, 12);
+  printRoom(&rooms, &items, 13);
+  printRoom(&rooms, &items, 14);
+  printRoom(&rooms, &items, 15);
+  cout<<"\nEndprintimng rooms\n";*/
+  cout << "You find yourself in the dark, inside a mansion. You vaguely recall that you may have been at a party of some sorts.  The doors all around the perimiter are locked, can you get out? \n" << endl; 
 
   cout << "\n" << "type 'help' if you need help" << endl;
 
@@ -41,7 +65,7 @@ int main()
       if (strcmp(input, "help") == 0)
 	{
 	  cout << endl << "The goal of the game is to escape the mansion, to do so you may need to collect some items along the way" << endl;
-	  cout << "You may move or pick/drop items by using the words: "
+	  cout << "You may move or pick/drop items by using the words: " << endl; 
 	    cout << "move, get, drop, inventory, help, and quit." << endl; 
 	}
       
@@ -53,14 +77,14 @@ int main()
       
       else if(strcmp(input, "move") == 0)
 	{
-	  cout << endl << "Which direction would you like to go? (Please input a cardinal direction))"
+	  cout << endl << "Which direction would you like to go? Please input a cardinal direction\n"; 
 	  cin >> input;
 	  cin.clear();
 	  cin.ignore(10000000, '\n');
 
 	  if(move(&rooms, currentRoom, input) == 0) // If there is no room that matches input
 	    {
-	      cout << endl << "You can not go that direction" << endl; 
+	      cout << endl << "You cannot go that direction" << endl; 
 	    }
 	  else
 	    {
@@ -84,25 +108,27 @@ int main()
       else if(strcmp(input, "get") == 0)
 	{
 	  cout << endl << "What would you like to pick up?" << endl;
-	  cin >> input;
+	  cin.get(input, 50);
+	  // cout<<"\nYou want to pickup"<<input;
 	  cin.clear();
 	  cin.ignore(1000000, '\n');
-	  getItem(&rooms, &items, &inventory, currentRoom, input);
+	  //cout<<"\nYou want to pick up"<<input;
+	  pickItem(&rooms, &items, &inventory, currentRoom, input);
 	}
 
       else if(strcmp(input, "drop") == 0)
 	{
 	  cout << endl << "What would you like to drop?" << endl;
-	  cin >> input;
+	  cin.get(input, 50);
 	  cin.clear();
 	  cin.ignore(10000, '\n');
-	  dropItem(&rooms. &items, &inventory, currentRoom, input);
+	  dropItem(&rooms, &items, &inventory, currentRoom, input);
 	}
       else
 	{
 	  cout << endl << "Not a valid input. Check your spelling." << endl;  
 	}
-
+      // Winning condition
       if ((currentRoom == 15) && (find(inventory.begin(), inventory.end(), 1) != inventory.end())
 	  && (find(inventory.begin(), inventory.end(), 3) != inventory.end())
 	  && (find(inventory.begin(), inventory.end(), 4) != inventory.end())
@@ -111,11 +137,10 @@ int main()
 	  cout << "In the dark room you screwed in the light bulb so you can see. This then revealed a missing screw in the door lock, after fixing that you then used the key to unlock the door and you escaped! Good Job!" << endl;
 	  break; 
 	}
-      
     }
   return 0;
 }
-
+// method for adding all rooms to vector
 void initializeRooms(vector<Room*>* rooms)
 {
   char* west = (char*)("west");
@@ -139,11 +164,11 @@ void initializeRooms(vector<Room*>* rooms)
 
    // Closet
   Room* closet = new Room();
-  closet -> setDes((char*)("Closet: A little unpleasent smelling and rather small, there is something in the corner")); // set description of the room            
+  closet -> setDes((char*)("Closet: A little unpleasent smelling and rather small")); // set description of the room            
   closet -> setID(2); // set room ID                                                               
   // set exits                                                                                     
   temp.insert(pair<int, char*> (1, south));
-  closet -> setItem(4);
+  closet -> setItem(1);
   closet -> setExit(temp); // pushes exits to class                                                
   rooms -> push_back(closet); // pushes room to the vector                                         
   temp.clear(); //clears the map
@@ -164,11 +189,11 @@ void initializeRooms(vector<Room*>* rooms)
 
    // Bathroom                     
   Room* bath = new Room();
-  bath -> setDes((char*)("Bathroom: The guest bathroom")); // set description of the room            
+  bath -> setDes((char*)("Bathroom: The guest bathroom, inside a drawer you find an object")); // set description of the room            
   bath -> setID(4); // set room ID                                                                
   // set exits                                                                                     
   temp.insert(pair<int, char*> (1, north));
-  bath  -> setItem(0);
+  bath  -> setItem(4);
   bath -> setExit(temp); // pushes exits to class                                                 
   rooms -> push_back(bath); // pushes room to the vector                                          
   temp.clear(); //clears the map
@@ -216,14 +241,14 @@ void initializeRooms(vector<Room*>* rooms)
   movie -> setID(8); // set room ID                                                                
   // set exits                                                                                     
   temp.insert(pair<int, char*> (5, east));
-  movie -> setItem(0); 
+  movie -> setItem(3); 
   movie -> setExit(temp); // pushes exits to class                                                 
   rooms -> push_back(movie); // pushes room to the vector                                          
   temp.clear(); //clears the map
 
    // Garage 
   Room* garage = new Room();
-  nHall -> setDes((char*)("The garage: Rolls Royce to Tesla to McLaren")); // set description of theroom                         
+  garage -> setDes((char*)("The garage: Rolls Royce to Tesla to McLaren")); // set description of theroom                         
   garage -> setID(9); // set room ID                                                    
   // set exits                                                             
   temp.insert(pair<int, char*> (3, east));
@@ -261,10 +286,10 @@ void initializeRooms(vector<Room*>* rooms)
    // Walk in closet                                                                               
   Room* clothCloset = new Room();
   clothCloset -> setDes((char*)("Walk in Closet: Closet for the master bedroom. Louis Vuitton and Versace and Tom Ford, it really is a masterpiece.")); // set description of theroom                
-  nHall -> setID(12); // set room ID                                                               
+  clothCloset -> setID(12); // set room ID                                                               
   // set exits                                                                                     
   temp.insert(pair<int, char*> (11, south));
-  clothCloset -> setItem(0);
+  clothCloset -> setItem(2);
   clothCloset -> setExit(temp); // pushes exits to class                                           
   rooms -> push_back(clothCloset); // pushes room to the vector                                   
   temp.clear(); //clears the map
@@ -320,25 +345,25 @@ void initializeItems(vector<Item*>* items)
   items -> push_back(coin);
   //Screw
   Item* screw = new Item();
-  screw -> setName((char*)("A half inch screw"));
+  screw -> setName((char*)("Half inch screw"));
   screw -> setID(3);
   items	-> push_back(screw);
   // light bulb
   Item* light = new Item();
   light -> setName((char*)("LED light bulb"));
   light -> setID(4);
-  items	-> push_back(coin);
+  items	-> push_back(light);
   // Screw Driver
   Item* driver = new Item();
-  driver -> setName((char*)("A screw driver"));
+  driver -> setName((char*)("Screw Driver"));
   driver -> setID(5);
   items -> push_back(driver); 
 }
 
 void printRoom(vector<Room*>* rooms, vector<Item*>* items, int currentRoom)
-{
+{ // Printing the rooms themselves, its items, and exits
   vector<Room*>::iterator i;
-  vector<Item*>::iterator z;
+  vector<Item*>::iterator j;
 
   for ( i = rooms -> begin(); i != rooms -> end(); i++)
     {
@@ -346,19 +371,19 @@ void printRoom(vector<Room*>* rooms, vector<Item*>* items, int currentRoom)
 	{
 	  cout << (*i) -> getDes() << "." << endl;
 	  cout << "Your exits are: ";
-	  for (map<int, char*>::const_iterator it = (*i) -> getExit() -> begin(); it != (*i) -> getExit() -> end(); i++)
+	  for (map<int, char*>::const_iterator v = (*i) -> getExit() -> begin(); v != (*i) -> getExit() -> end(); v++)
 	    {
-	      cout << it -> second << " "; 
+	      cout << v -> second << " "; 
 	    }
 	  cout << endl;
 	  cout << "In this room there are: " << endl;
-	  for (z = items -> begin(); z != items -> end(); z++)
-	    {
-	      if((*i) -> getItem() == (*z) -> getID())
-		{
-		  cout << (*z) -> getName() << endl; 
-		}
-	    }
+	   for (j = items -> begin(); j != items -> end(); j++)
+	     {
+	     if ((*i) -> getItem() == (*j) -> getID())
+	       {//printing item in the room
+		 cout << (*j) -> getName() << endl;
+	       }
+	   }
 	  cout << endl;
 	  break; 
 	}
@@ -390,13 +415,19 @@ void pickItem(vector<Room*>* rooms, vector<Item*>* items, vector<int>* inventory
   vector<Item*>::iterator j;
   
   for (i = rooms -> begin(); i != rooms -> end(); i++)
-    {
-      if (currentRoom == (*i) -> getID())
-	{
-	  for( j = items -> begin(); j != items -> end(); j++)
+  {
+    if (currentRoom == (*i) -> getID())
+  	{
+	  cout<<"\nroomid = "<<(*i) -> getID();
+	  for (j = items -> begin(); j != items -> end(); j++)
 	    {
-	      if ((*i) -> getItem() == (*j) -> getID() && (strcmp((*j) -> getName(), name) == 0))
+	      /*  cout<<"\nitem is\n"<<(*i) -> getItem();
+	      cout<<"j item id is"<<(*j) -> getID();
+	      cout<<"\n name = "<<name;
+	      cout<<"\n j name ="<<(*j)->getName();*/
+	      if (((*i) -> getItem() == (*j) -> getID()) && (strcmp((*j) -> getName(), name) == 0))
 		{
+		  cout<<"\nI am picking up the item\n";
 		  inventory -> push_back((*j) -> getID());
 		  (*i) -> setItem(0);
 		  cout << endl << "You picked up " << (*j) -> getName() << "." << endl;

@@ -4,27 +4,27 @@
 
 using namespace std; 
 
-Item::Item()
+Item::Item() 
 {
 
 }
 
-char* Item::getName()
+char* Item::getName() // Function for getting name
 {
   return name; 
 }
 
-int Item::getID()
+int Item::getID() // Function for  getting id for each item
 {
   return id; 
 }
 
-void Item::setName(char* inpName)
+void Item::setName(char* inpName) // Function for setting name
 {
   name = inpName; 
 }
 
-void Item::setID(int inpID)
+void Item::setID(int inpID) //Function  for setting ID
 {
   id = inpID; 
 }
